@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 
+//custom hook
+import useForm from '../hooks/useForm';
+
 import Button from "../theme/Button";
 
 const useStyles = makeStyles(theme => ({
@@ -21,29 +24,46 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const initialValue = {
+  username: '',
+  email: ''
+}
+
 export default function SignupForm() {
   const classes = useStyles();
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
+  const [values, clearForm, handleChanges, handleSubmit] = useForm(initialValue, callback);
 
-
-  const handleChanges = e => {
-    setUsername(e.target.value);
-  };
-
-  const handleEmailChange = e => {
-    setEmail(e.target.value)
+  //will run here as a function, however with hoisting it can be run like: const callback = () => ... if run above the destructured values from useForm
+  function callback() {
+    alert(`Username ${values.username} and email ${values.email} have been successfully submitted!`);
   }
 
-  const handleSubmit = e => {
-    e.preventDefault();
-    alert(username);
-  };
+  
+  //const [formValues, setFormValues] = useState(initialValue);
+  // const [username, setUsername] = useState("");
+  // const [email, setEmail] = useState("");
 
-  const clearForm = e => {
-    e.preventDefault();
-    setUsername("");
-  };
+
+  // const handleChanges = e => {
+  //   e.preventDefault();
+  //   setFormValues({...formValues, [e.target.name]: e.target.value});
+  // };
+
+  // const handleEmailChange = e => {
+  //   setEmail(e.target.value)
+  // }
+
+  // const handleSubmit = e => {
+  //   e.preventDefault();
+  //   alert(`Username ${values.username} and email ${values.email} have been successfully submitted!`);
+
+  
+  // };
+
+  // const clearForm = e => {
+  //   e.preventDefault();
+  //   setFormValues(initialValue);
+  // };
 
   return (
     <div p={2} className="form">
@@ -55,7 +75,7 @@ export default function SignupForm() {
             label="Username"
             className={classes.textField}
             name="username"
-            value={username}
+            value={values.username}
             onChange={handleChanges}
             margin="normal"
             variant="outlined"
@@ -64,9 +84,9 @@ export default function SignupForm() {
             id="email"
             label="Email"
             className={classes.textField}
-            name="emaile"
-            value={email}
-            onChange={handleEmailChange}
+            name="email"
+            value={values.email}
+            onChange={handleChanges}
             margin="normal"
             variant="outlined"
           />

@@ -1,11 +1,31 @@
 import {useState} from 'react'
 
-export const useForm = (initialValue) => {
-    const [value, setValue] = useState(initialValue)
+function useForm (initialValue, cb) {
+    const [values, setValues] = useState(initialValue, cb);
 
-    const updateInput = (newValue) => {
-        setValue(newValue)
+    const clearForm = () => {
+        setValues(initialValue)
+        localStorage.clear();
     }
-    return [value, updateInput]
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        cb();
+    }
+    const handleChanges = (e) => {
+        localStorage.setItem([e.target.name], e.target.value)
+        setValues({...values, [e.target.name]: e.target.value});    
+    }
+    return [values, clearForm, handleChanges, handleSubmit]
 }
 
+// export const useForm = (initialValue) => {
+//     const [value, setValue] = useState(initialValue);
+
+//     const updateInput = (newValue) => {
+//         setValue(newValue)
+//     }
+//     return [value, updateInput]
+// }
+
+export default useForm
