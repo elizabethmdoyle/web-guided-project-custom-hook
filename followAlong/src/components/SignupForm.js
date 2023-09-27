@@ -24,14 +24,16 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const initialValue = {
-  username: '',
-  email: ''
-}
+
+const initialValue = {username: "", email: ''}
+// const initialValue = {
+//   username: localStorage.getItem('username') ? localStorage.getItem('username') : '',
+//   email: localStorage.getItem('email') ? localStorage.getItem('email') : ''
+// }
 
 export default function SignupForm() {
   const classes = useStyles();
-  const [values, clearForm, handleChanges, handleSubmit] = useForm(initialValue, callback);
+  const [values, clearForm, handleChanges, handleSubmit] = useForm('sign-in',initialValue, callback);
 
   //will run here as a function, however with hoisting it can be run like: const callback = () => ... if run above the destructured values from useForm
   function callback() {

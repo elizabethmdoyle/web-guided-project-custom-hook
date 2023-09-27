@@ -1,10 +1,11 @@
-import {useState} from 'react'
+import { useLocalStorage } from './useLocalStorage';
 
-function useForm (initialValue, cb) {
-    const [values, setValues] = useState(initialValue, cb);
+function useForm (key, initialValue, cb) {
+   // const [values, setValues] = useState(initialValue, cb);
+   const [values, setValue] = useLocalStorage(key, initialValue)
 
     const clearForm = () => {
-        setValues(initialValue)
+        setValue(initialValue)
         localStorage.clear();
     }
 
@@ -13,8 +14,8 @@ function useForm (initialValue, cb) {
         cb();
     }
     const handleChanges = (e) => {
-        localStorage.setItem([e.target.name], e.target.value)
-        setValues({...values, [e.target.name]: e.target.value});    
+      //  localStorage.setItem([e.target.name], e.target.value)
+        setValue({...values, [e.target.name]: e.target.value});    
     }
     return [values, clearForm, handleChanges, handleSubmit]
 }
